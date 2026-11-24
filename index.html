@@ -197,38 +197,18 @@
       }
 
       .visual {
+        display: grid;
+        place-items: center;
         position: relative;
         min-height: 440px;
+        padding: 78px 24px 72px;
         overflow: hidden;
         border-radius: 5px;
         background:
-          radial-gradient(ellipse at 52% 38%, rgba(223, 250, 161, 0.28), transparent 38%),
+          radial-gradient(circle at 1px 1px, rgba(245, 242, 233, 0.1) 1px, transparent 1px),
           linear-gradient(145deg, #343d33 0%, #1c231e 60%, #111713 100%);
+        background-size: 24px 24px, auto;
         color: white;
-      }
-
-      .visual::before,
-      .visual::after {
-        position: absolute;
-        border: 1px solid rgba(245, 242, 233, 0.15);
-        border-radius: 50%;
-        content: "";
-      }
-
-      .visual::before {
-        width: 330px;
-        height: 330px;
-        top: 48px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .visual::after {
-        width: 245px;
-        height: 245px;
-        top: 90px;
-        left: 50%;
-        transform: translateX(-50%);
       }
 
       .visual-label {
@@ -242,54 +222,72 @@
         text-transform: uppercase;
       }
 
-      .sun {
-        position: absolute;
-        top: 126px;
-        left: 50%;
-        width: 170px;
-        height: 170px;
-        transform: translateX(-50%);
-        border-radius: 50%;
-        background: var(--green);
-        box-shadow: 0 0 75px rgba(199, 243, 107, 0.27);
-      }
-
-      .horizon {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        height: 175px;
-        background:
-          linear-gradient(180deg, transparent, rgba(14, 19, 15, 0.4)),
-          repeating-linear-gradient(90deg, transparent 0 28px, rgba(245, 242, 233, 0.1) 29px 30px);
-        clip-path: polygon(0 41%, 12% 27%, 22% 43%, 38% 18%, 51% 38%, 66% 13%, 77% 40%, 90% 20%, 100% 33%, 100% 100%, 0 100%);
-      }
-
-      .visual-note {
-        position: absolute;
-        right: 24px;
-        bottom: 22px;
-        left: 24px;
+      .visual-ticket {
+        position: relative;
         z-index: 1;
+        width: min(100%, 350px);
+        margin: 0 auto;
+        padding: 22px 24px;
+        transform: rotate(-2deg);
+        border-radius: 5px;
+        background: #f5f2e9;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+        color: var(--ink);
+      }
+
+      .visual-ticket-head {
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        align-items: end;
-        font-size: 11px;
-        letter-spacing: 0.07em;
+        color: var(--muted);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
       }
 
-      .visual-note strong {
-        max-width: 150px;
-        color: var(--green);
+      .visual-ticket-mark {
+        display: grid;
+        width: 28px;
+        height: 28px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--green);
+        color: var(--ink);
+        font-size: 11px;
+        letter-spacing: 0;
+      }
+
+      .visual-ticket-title {
+        margin: 16px 0 18px;
         font-family: var(--serif);
-        font-size: 20px;
-        font-weight: 400;
-        letter-spacing: -0.02em;
-        line-height: 1.1;
-        text-align: right;
-        text-transform: none;
+        font-size: clamp(29px, 3vw, 36px);
+        letter-spacing: -0.05em;
+        line-height: 1;
+      }
+
+      .visual-ticket-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding-top: 13px;
+        border-top: 1px dashed rgba(28, 33, 29, 0.24);
+      }
+
+      .visual-ticket-details span {
+        display: grid;
+        gap: 5px;
+      }
+
+      .visual-ticket-details small {
+        color: var(--muted);
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .visual-ticket-details strong {
+        font-size: 11px;
       }
 
       .intro {
@@ -370,7 +368,7 @@
         grid-template-columns: 132px 1fr;
         align-items: center;
         gap: 14px;
-        margin: 8px 0 0;
+        margin: 0;
       }
 
       .event-photo {
@@ -779,24 +777,7 @@
 
         .visual {
           min-height: 370px;
-        }
-
-        .visual::before {
-          width: 290px;
-          height: 290px;
-          top: 36px;
-        }
-
-        .visual::after {
-          width: 220px;
-          height: 220px;
-          top: 71px;
-        }
-
-        .sun {
-          top: 100px;
-          width: 150px;
-          height: 150px;
+          padding: 68px 20px 66px;
         }
 
         .intro {
@@ -852,6 +833,7 @@
 
         .visual {
           min-height: 320px;
+          padding: 58px 16px 56px;
         }
 
         .calendar-panel,
@@ -871,23 +853,6 @@
 
         .calendar-range {
           font-size: 10px;
-        }
-
-        .visual::before {
-          width: 250px;
-          height: 250px;
-        }
-
-        .visual::after {
-          width: 190px;
-          height: 190px;
-          top: 66px;
-        }
-
-        .sun {
-          top: 88px;
-          width: 130px;
-          height: 130px;
         }
 
         .footer-inner {
@@ -935,14 +900,19 @@
           </div>
         </div>
 
-        <div class="visual" role="img" aria-label="Abstrakt illustrasjon av en lysende grønn sol over en scene">
-          <span class="visual-label">Mathias · booking</span>
-          <span class="sun" aria-hidden="true"></span>
-          <span class="horizon" aria-hidden="true"></span>
-          <span class="visual-note">
-            <span>Gode kvelder<br />begynner her</span>
-            <strong>Hva skal vi<br />finne på?</strong>
-          </span>
+        <div class="visual" aria-hidden="true">
+          <span class="visual-label">Booking · arrangement · samarbeid</span>
+          <div class="visual-ticket">
+            <div class="visual-ticket-head">
+              <span>Bookingforespørsel</span>
+              <span class="visual-ticket-mark">M</span>
+            </div>
+            <p class="visual-ticket-title">Gode kvelder<br />begynner her.</p>
+            <div class="visual-ticket-details">
+              <span><small>Dato</small><strong>Velg i kalenderen</strong></span>
+              <span><small>Tidspunkt</small><strong>00:00–23:00</strong></span>
+            </div>
+          </div>
         </div>
       </section>
 
