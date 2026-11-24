@@ -507,10 +507,14 @@
       }
 
       .calendar-day:focus-visible,
-      .booking-submit:focus-visible,
-      .time-slot:focus-visible {
+      .booking-submit:focus-visible {
         outline: 3px solid #647d41;
         outline-offset: 3px;
+      }
+
+      .time-select:focus-visible {
+        outline: 3px solid var(--green);
+        outline-offset: 2px;
       }
 
       .calendar-day.is-selected {
@@ -529,7 +533,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 18px;
-        margin-top: 20px;
+        margin-top: 14px;
         color: var(--muted);
         font-size: 11px;
       }
@@ -543,17 +547,9 @@
       .legend-dot {
         width: 9px;
         height: 9px;
-        border: 1px solid var(--line);
+        border: 1px solid var(--ink);
         border-radius: 50%;
-        background: white;
-      }
-
-      .calendar-status {
-        min-height: 18px;
-        margin: 14px 0 0;
-        color: var(--muted);
-        font-size: 11px;
-        line-height: 1.5;
+        background: var(--green);
       }
 
       .booking-panel {
@@ -587,46 +583,34 @@
         margin: 0 0 20px;
       }
 
-      .time-picker h4 {
+      .time-picker label {
+        display: block;
         margin: 0 0 10px;
         color: rgba(255, 255, 255, 0.84);
         font-size: 12px;
+        font-weight: 700;
       }
 
-      .time-slots {
-        display: grid;
-        gap: 8px;
-      }
-
-      .time-slot {
-        display: flex;
-        min-height: 42px;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 0 12px;
+      .time-select {
+        width: 100%;
+        min-height: 46px;
+        padding: 10px 12px;
         border: 1px solid rgba(255, 255, 255, 0.28);
         border-radius: 4px;
-        background: transparent;
+        background: rgba(255, 255, 255, 0.08);
         color: white;
-        cursor: pointer;
         font: inherit;
         font-size: 12px;
-        text-align: left;
       }
 
-      .time-slot.is-selected {
-        border-color: var(--green);
-        background: rgba(199, 243, 107, 0.12);
-      }
-
-      .time-slot:disabled {
-        color: rgba(255, 255, 255, 0.46);
+      .time-select:disabled {
+        color: rgba(255, 255, 255, 0.58);
         cursor: not-allowed;
       }
 
-      .time-slot-status {
-        font-size: 10px;
+      .time-select option {
+        background: white;
+        color: var(--ink);
       }
 
       .booking-form {
@@ -1039,11 +1023,8 @@
               aria-label="Velg ønsket bookingdato i desember 2026"
             ></div>
             <div class="calendar-legend" aria-label="Kalenderforklaring">
-              <span><i class="legend-dot" aria-hidden="true"></i>Ledig i denne nettleseren</span>
+              <span><i class="legend-dot" aria-hidden="true"></i>Åpen for forespørsler</span>
             </div>
-            <p class="calendar-status" id="calendar-status" role="status" aria-live="polite">
-              Kalenderstatus lagres bare på denne enheten.
-            </p>
           </div>
 
           <aside class="booking-panel" aria-labelledby="booking-date">
@@ -1053,10 +1034,10 @@
               Velg en dato og et tidspunkt for å sende en forespørsel på e-post.
             </p>
             <div class="time-picker">
-              <h4>Velg tidspunkt (norsk tid)</h4>
-              <div class="time-slots" id="time-slots" role="group" aria-label="Velg et tidspunkt">
-                <p class="booking-copy" id="slot-help">Velg en dato først.</p>
-              </div>
+              <label for="time-slots">Velg tidspunkt (norsk tid)</label>
+              <select class="time-select" id="time-slots" disabled>
+                <option value="">Velg en dato først</option>
+              </select>
             </div>
             <form class="booking-form" id="booking-form">
               <label for="booking-name">
@@ -1098,7 +1079,7 @@
               </button>
             </form>
             <p class="booking-note">
-              Kalenderen synkroniseres ikke med andre besøkende. Mathias må bekrefte tidspunktet på e-post.
+              Dette er en forespørsel, ikke en bekreftet booking. Tidspunktet avtales på e-post.
             </p>
             <p class="booking-note">
               Navn, e-post og begrunnelse brukes for å behandle bookingforespørselen.
@@ -1131,8 +1112,6 @@
       </div>
     </footer>
     <script>
-      const STORAGE_KEY = "mathiasbooking.localCalendar.unavailableSlots.v1";
-      const VALID_SLOT_KEY = /^2026-12-(0[4-9]|[12]\d|3[01])\|(18:00|20:00|22:00)$/;
       const CLOSED_DATES = new Set([
         "2026-12-24",
         "2026-12-25",
@@ -1148,32 +1127,13 @@
       const bookingReason = document.querySelector("#booking-reason");
       const bookingSubmit = document.querySelector("#booking-submit");
       const bookingStatus = document.querySelector("#booking-status");
-      const calendarStatus = document.querySelector("#calendar-status");
       const timeSlots = document.querySelector("#time-slots");
-      const slotHelp = document.querySelector("#slot-help");
-      const slots = [
-        { start: "18:00", end: "20:00" },
-        { start: "20:00", end: "22:00" },
-        { start: "22:00", end: "00:00" },
-      ];
+      const slots = Array.from({ length: 24 }, (_, hour) => ({
+        start: `${String(hour).padStart(2, "0")}:00`,
+        end: `${String((hour + 1) % 24).padStart(2, "0")}:00`,
+      }));
       let selectedDate = null;
       let selectedSlot = null;
-      let unavailableSlots = new Set();
-      let storageReady = true;
-
-      const readUnavailableSlots = () => {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved === null) return new Set();
-
-        const values = JSON.parse(saved);
-        if (
-          !Array.isArray(values) ||
-          values.some((value) => typeof value !== "string" || !VALID_SLOT_KEY.test(value))
-        ) {
-          throw new Error("Lokal kalenderdata har et ugyldig format.");
-        }
-        return new Set(values);
-      };
 
       const currentNorwayDateTime = () => {
         const parts = Object.fromEntries(
@@ -1204,25 +1164,17 @@
           timeZone: "UTC",
         }).format(new Date(`${dateKey}T00:00:00Z`));
 
-      const slotKey = (date, start) => `${date}|${start}`;
-
       const slotStartsInFuture = (dateKey, slotStart, now) =>
         dateKey > now.date || (dateKey === now.date && slotStart > now.time);
 
       const dateHasAvailableSlot = (dateKey, now) =>
-        slots.some(
-          (slot) =>
-            slotStartsInFuture(dateKey, slot.start, now) &&
-            !unavailableSlots.has(slotKey(dateKey, slot.start)),
-        );
+        slots.some((slot) => slotStartsInFuture(dateKey, slot.start, now));
 
       const updateBookingButton = () => {
         const now = currentNorwayDateTime();
         bookingSubmit.disabled =
-          !storageReady ||
           !selectedDate ||
           !selectedSlot ||
-          unavailableSlots.has(slotKey(selectedDate, selectedSlot)) ||
           !slotStartsInFuture(selectedDate, selectedSlot, now) ||
           !bookingName.value.trim() ||
           !bookingEmail.value.trim() ||
@@ -1247,8 +1199,7 @@
           const button = document.createElement("button");
           const inPeriod = day >= 4;
           const isClosed = CLOSED_DATES.has(dateKey);
-          const hasAvailability =
-            storageReady && !isClosed && dateHasAvailableSlot(dateKey, now);
+          const hasAvailability = !isClosed && dateHasAvailableSlot(dateKey, now);
 
           button.type = "button";
           button.className = "calendar-day";
@@ -1260,12 +1211,10 @@
             button.setAttribute("aria-label", `${day}. desember, utenfor kalenderperioden`);
           } else if (isClosed) {
             button.setAttribute("aria-label", `${formatBookingDate(dateKey)}, stengt`);
-          } else if (!storageReady) {
-            button.setAttribute("aria-label", `${formatBookingDate(dateKey)}, lokal kalender utilgjengelig`);
           } else if (!hasAvailability) {
-            button.setAttribute("aria-label", `${formatBookingDate(dateKey)}, ingen ledige tider`);
+            button.setAttribute("aria-label", `${formatBookingDate(dateKey)}, ingen tider frem i tid`);
           } else {
-            button.setAttribute("aria-label", `${formatBookingDate(dateKey)}, ledige tider lokalt`);
+            button.setAttribute("aria-label", `${formatBookingDate(dateKey)}, åpen for forespørsler`);
             button.addEventListener("click", () => {
               if (!dateHasAvailableSlot(dateKey, currentNorwayDateTime())) {
                 renderCalendar();
@@ -1274,7 +1223,7 @@
               selectedDate = dateKey;
               selectedSlot = null;
               bookingDate.textContent = formatBookingDate(dateKey);
-              bookingCopy.textContent = "Velg et ledig tidspunkt og fyll inn opplysningene dine.";
+              bookingCopy.textContent = "Velg et tidspunkt og fyll inn opplysningene dine.";
               bookingStatus.textContent = "";
               bookingStatus.removeAttribute("data-state");
               renderTimeSlots();
@@ -1290,93 +1239,63 @@
 
       const renderTimeSlots = () => {
         timeSlots.replaceChildren();
+        const prompt = document.createElement("option");
+        prompt.value = "";
+        prompt.textContent = selectedDate ? "Velg et tidspunkt" : "Velg en dato først";
+        timeSlots.append(prompt);
+        timeSlots.disabled = !selectedDate;
+        timeSlots.value = selectedSlot || "";
+
+        if (!selectedDate) return;
+
         const now = currentNorwayDateTime();
-        if (!selectedDate) {
-          slotHelp.textContent = "Velg en dato først.";
-          timeSlots.append(slotHelp);
-          return;
-        }
-        if (!storageReady) {
-          slotHelp.textContent = "Lokal kalenderlagring er ikke tilgjengelig.";
-          timeSlots.append(slotHelp);
-          return;
-        }
-
         for (const slot of slots) {
-          const unavailable = unavailableSlots.has(slotKey(selectedDate, slot.start));
-          const slotInFuture = slotStartsInFuture(selectedDate, slot.start, now);
-          const button = document.createElement("button");
-          const label = document.createElement("span");
-          const detail = document.createElement("span");
-          button.type = "button";
-          button.className = "time-slot";
-          button.disabled = unavailable || !slotInFuture;
-          button.setAttribute("aria-pressed", String(selectedSlot === slot.start));
-          label.textContent = `${slot.start}–${slot.end}`;
-          detail.className = "time-slot-status";
-          detail.textContent = !slotInFuture
-            ? "Tiden har passert"
-            : unavailable
-              ? "Opptatt lokalt"
-              : "Ledig";
-          button.append(label, detail);
-          if (selectedSlot === slot.start) button.classList.add("is-selected");
-          button.addEventListener("click", () => {
-            selectedSlot = slot.start;
-            bookingStatus.textContent = "";
-            bookingStatus.removeAttribute("data-state");
-            renderTimeSlots();
-            updateBookingButton();
-          });
-          timeSlots.append(button);
+          const option = document.createElement("option");
+          option.value = slot.start;
+          option.textContent = `${slot.start}–${slot.end}`;
+          option.disabled = !slotStartsInFuture(selectedDate, slot.start, now);
+          timeSlots.append(option);
         }
       };
 
-      const refreshLocalCalendar = () => {
-        try {
-          unavailableSlots = readUnavailableSlots();
-          storageReady = true;
-          calendarStatus.textContent =
-            "Opptatte tider lagres bare lokalt og vises ikke for andre besøkende.";
-          if (selectedDate && !dateHasAvailableSlot(selectedDate, currentNorwayDateTime())) {
-            selectedDate = null;
-            selectedSlot = null;
-            bookingDate.textContent = "Velg en dato";
-            bookingCopy.textContent = "Velg en dato og et tidspunkt for å sende en forespørsel på e-post.";
-          }
-        } catch (error) {
-          storageReady = false;
-          calendarStatus.textContent = `Lokal kalender utilgjengelig: ${error.message}`;
-        }
-        renderCalendar();
-        renderTimeSlots();
+      timeSlots.addEventListener("change", () => {
+        selectedSlot = timeSlots.value || null;
+        bookingStatus.textContent = "";
+        bookingStatus.removeAttribute("data-state");
         updateBookingButton();
-      };
-
-      window.addEventListener("storage", (event) => {
-        if (event.key === STORAGE_KEY || event.key === null) refreshLocalCalendar();
       });
 
       bookingForm.addEventListener("input", updateBookingButton);
       bookingForm.addEventListener("submit", (event) => {
         event.preventDefault();
         if (!selectedDate || !selectedSlot) {
-          bookingStatus.textContent = "Velg en dato og et ledig tidspunkt først.";
+          bookingStatus.textContent = "Velg en dato og et tidspunkt først.";
+          return;
+        }
+        if (!slotStartsInFuture(selectedDate, selectedSlot, currentNorwayDateTime())) {
+          bookingStatus.textContent = "Tidspunktet har passert. Velg en senere tid.";
+          selectedSlot = null;
+          renderTimeSlots();
+          updateBookingButton();
           return;
         }
         if (!bookingForm.reportValidity()) return;
 
         const formattedDate = formatBookingDate(selectedDate);
-        const subject = encodeURIComponent(`Bookingforespørsel: ${formattedDate} kl. ${selectedSlot}`);
+        const selectedTime = slots.find((slot) => slot.start === selectedSlot);
+        const timeRange = `${selectedTime.start}–${selectedTime.end}`;
+        const subject = encodeURIComponent(`Bookingforespørsel: ${formattedDate} kl. ${timeRange}`);
         const body = encodeURIComponent(
-          `Navn: ${bookingName.value.trim()}\nE-post: ${bookingEmail.value.trim()}\nDato: ${formattedDate}\nTidspunkt: ${selectedSlot}\n\nBegrunnelse:\n${bookingReason.value.trim()}`,
+          `Navn: ${bookingName.value.trim()}\nE-post: ${bookingEmail.value.trim()}\nDato: ${formattedDate}\nTidspunkt: ${timeRange}\n\nBegrunnelse:\n${bookingReason.value.trim()}`,
         );
         bookingStatus.textContent =
           "E-postutkast åpnes. Forespørselen sendes først når du sender e-posten. Ingen tid er reservert nå.";
         window.location.href = `mailto:mathias.thorsell@hotmail.com?subject=${subject}&body=${body}`;
       });
 
-      refreshLocalCalendar();
+      renderCalendar();
+      renderTimeSlots();
+      updateBookingButton();
     </script>
   </body>
 </html>
