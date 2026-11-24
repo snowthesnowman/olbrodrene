@@ -299,8 +299,8 @@
 
       .intro {
         display: grid;
-        grid-template-columns: 0.7fr 1.3fr;
-        gap: 80px;
+        grid-template-columns: 0.55fr 1fr 0.8fr;
+        gap: 48px;
         padding: 88px 0 96px;
         border-top: 1px solid var(--line);
       }
@@ -325,6 +325,76 @@
         color: var(--muted);
         font-size: 15px;
         line-height: 1.75;
+      }
+
+      .intro-media {
+        display: grid;
+        grid-template-columns: 102px 1fr;
+        align-content: start;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .profile-photo {
+        display: block;
+        width: 102px;
+        height: 102px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .profile-meta {
+        display: grid;
+        gap: 8px;
+      }
+
+      .profile-name {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: 20px;
+        letter-spacing: -0.03em;
+      }
+
+      .linkedin-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .linkedin-link:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+
+      .linkedin-link span {
+        color: #647d41;
+        font-size: 16px;
+      }
+
+      .event-photo-wrap {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 132px 1fr;
+        align-items: center;
+        gap: 14px;
+        margin: 8px 0 0;
+      }
+
+      .event-photo {
+        display: block;
+        width: 132px;
+        height: 132px;
+        border-radius: 4px;
+        object-fit: cover;
+      }
+
+      .event-photo-wrap figcaption {
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.6;
       }
 
       .contact {
@@ -556,6 +626,40 @@
             og hvem som skal være med. Jeg svarer så snart jeg kan, og så finner vi ut
             om det er en god match. Uforpliktende, selvfølgelig.
           </p>
+        </div>
+        <div class="intro-media">
+          <img
+            class="profile-photo"
+            src="assets/mathias-profile.png"
+            alt="Portrett av Mathias Thorsell ved solnedgang"
+            width="768"
+            height="768"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="profile-meta">
+            <p class="profile-name">Mathias Thorsell</p>
+            <a
+              class="linkedin-link"
+              href="https://www.linkedin.com/in/thorsell-it/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <figure class="event-photo-wrap">
+            <img
+              class="event-photo"
+              src="assets/mathias-event.png"
+              alt="Mathias sammen med en venn"
+              width="150"
+              height="150"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Gode folk og gode kvelder.</figcaption>
+          </figure>
         </div>
       </section>
 
