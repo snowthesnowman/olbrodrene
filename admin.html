@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#f5f2e9" />
+    <title>Lokal kalenderkontroll — Mathias</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #f5f2e9;
+        --ink: #1c211d;
+        --muted: #656b63;
+        --green: #c7f36b;
+        --line: rgba(28, 33, 29, 0.16);
+        font-family: Arial, "Helvetica Neue", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+      }
+
+      main {
+        width: min(940px, calc(100% - 32px));
+        margin: 44px auto;
+      }
+
+      h1,
+      h2 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+        letter-spacing: -0.04em;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(36px, 7vw, 56px);
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .notice,
+      .status {
+        line-height: 1.6;
+      }
+
+      .notice {
+        max-width: 720px;
+        color: var(--muted);
+      }
+
+      .home-link {
+        display: inline-block;
+        margin: 0 0 22px;
+        color: var(--ink);
+        font-size: 13px;
+      }
+
+      .status {
+        min-height: 22px;
+        color: #35521f;
+        font-size: 13px;
+      }
+
+      .status[data-state="error"] {
+        color: #9c2c1f;
+      }
+
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 12px;
+      }
+
+      .day-card {
+        padding: 17px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.48);
+      }
+
+      .day-card h2 {
+        margin-bottom: 12px;
+      }
+
+      .slot-list {
+        display: grid;
+        gap: 9px;
+      }
+
+      .slot-option {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .slot-option input {
+        width: 17px;
+        height: 17px;
+        accent-color: var(--ink);
+      }
+
+      .slot-option:has(input:checked) {
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      @media (max-width: 520px) {
+        main {
+          margin: 28px auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Lokal kalenderkontroll</h1>
+      <p class="notice">
+        Huk av tider du vil vise som opptatt i denne nettleseren. Endringene lagres lokalt og
+        deles ikke med besøkende eller andre enheter. Siden er ikke passordbeskyttet, så ikke bruk
+        den til sensitiv informasjon.
+      </p>
+      <a class="home-link" href="/">Til forsiden</a>
+      <p class="status" id="admin-status" role="status" aria-live="polite">
+        Endringer lagres bare i denne nettleseren.
+      </p>
+      <div class="calendar" id="admin-calendar" aria-label="Kalender for desember 2026"></div>
+    </main>
+    <script src="/admin.js" defer></script>
+  </body>
+</html>
