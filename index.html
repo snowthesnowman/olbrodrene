@@ -397,6 +397,266 @@
         line-height: 1.6;
       }
 
+      .booking {
+        padding: 82px 0 90px;
+        border-top: 1px solid var(--line);
+      }
+
+      .booking-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+
+      .booking-heading .eyebrow {
+        margin-bottom: 18px;
+      }
+
+      .booking-heading h2 {
+        max-width: 700px;
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(42px, 5.2vw, 66px);
+        font-weight: 400;
+        letter-spacing: -0.07em;
+        line-height: 1;
+      }
+
+      .booking-period-label {
+        flex: 0 0 auto;
+        padding: 10px 13px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .booking-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+        gap: 24px;
+      }
+
+      .calendar-panel,
+      .booking-panel {
+        padding: 25px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+      }
+
+      .calendar-panel {
+        background: rgba(255, 255, 255, 0.48);
+      }
+
+      .calendar-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+
+      .calendar-top h3,
+      .booking-panel h3 {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: 27px;
+        font-weight: 400;
+        letter-spacing: -0.04em;
+      }
+
+      .calendar-range {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .calendar-weekdays,
+      .calendar-days {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 7px;
+      }
+
+      .calendar-weekdays {
+        margin-bottom: 8px;
+      }
+
+      .calendar-weekdays span {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .calendar-day,
+      .calendar-blank {
+        display: grid;
+        min-width: 0;
+        min-height: 48px;
+        place-items: center;
+        border-radius: 4px;
+      }
+
+      .calendar-day {
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+        font-size: 13px;
+        transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+      }
+
+      .calendar-day:hover:not(:disabled) {
+        border-color: var(--ink);
+      }
+
+      .calendar-day:focus-visible,
+      .booking-submit:focus-visible {
+        outline: 3px solid #647d41;
+        outline-offset: 3px;
+      }
+
+      .calendar-day.is-selected {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: white;
+      }
+
+      .calendar-day:disabled {
+        background: rgba(28, 33, 29, 0.06);
+        color: #8b8e88;
+        cursor: not-allowed;
+      }
+
+      .calendar-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-top: 20px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .calendar-legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+
+      .legend-dot {
+        width: 9px;
+        height: 9px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: white;
+      }
+
+      .booking-panel {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        background: var(--ink);
+        color: white;
+      }
+
+      .booking-panel .eyebrow {
+        margin-bottom: 22px;
+        color: rgba(255, 255, 255, 0.62);
+      }
+
+      .booking-panel h3 {
+        margin-bottom: 12px;
+        font-size: 32px;
+      }
+
+      .booking-copy {
+        min-height: 52px;
+        margin-bottom: 22px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+
+      .booking-form {
+        display: grid;
+        width: 100%;
+        gap: 14px;
+      }
+
+      .booking-form label {
+        display: grid;
+        gap: 7px;
+        color: rgba(255, 255, 255, 0.84);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .booking-form input,
+      .booking-form textarea {
+        width: 100%;
+        padding: 11px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+        font: inherit;
+        font-size: 13px;
+      }
+
+      .booking-form input::placeholder,
+      .booking-form textarea::placeholder {
+        color: rgba(255, 255, 255, 0.48);
+      }
+
+      .booking-form input:focus-visible,
+      .booking-form textarea:focus-visible {
+        outline: 3px solid var(--green);
+        outline-offset: 2px;
+      }
+
+      .booking-form textarea {
+        min-height: 104px;
+        resize: vertical;
+      }
+
+      .booking-submit {
+        width: 100%;
+        min-height: 48px;
+        padding: 0 18px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--green);
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .booking-submit:disabled {
+        background: rgba(255, 255, 255, 0.16);
+        color: rgba(255, 255, 255, 0.46);
+        cursor: not-allowed;
+      }
+
+      .booking-note,
+      .booking-status {
+        margin: 18px 0 0;
+        color: rgba(255, 255, 255, 0.58);
+        font-size: 11px;
+        line-height: 1.6;
+      }
+
+      .booking-status {
+        color: var(--green);
+      }
+
       .contact {
         position: relative;
         overflow: hidden;
@@ -468,7 +728,7 @@
           font-size: 12px;
         }
 
-        .topbar nav a:not(.nav-cta) {
+        .topbar nav a[href="#om"] {
           display: none;
         }
 
@@ -515,6 +775,25 @@
           padding: 62px 0 69px;
         }
 
+        .booking {
+          padding: 64px 0 72px;
+        }
+
+        .booking-heading {
+          align-items: start;
+          flex-direction: column;
+          margin-bottom: 24px;
+        }
+
+        .booking-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .calendar-panel,
+        .booking-panel {
+          padding: 20px;
+        }
+
         .contact {
           padding: 58px 0 62px;
         }
@@ -543,6 +822,25 @@
 
         .visual {
           min-height: 320px;
+        }
+
+        .calendar-panel,
+        .booking-panel {
+          padding: 16px;
+        }
+
+        .calendar-weekdays,
+        .calendar-days {
+          gap: 5px;
+        }
+
+        .calendar-day,
+        .calendar-blank {
+          min-height: 39px;
+        }
+
+        .calendar-range {
+          font-size: 10px;
         }
 
         .visual::before {
@@ -587,6 +885,7 @@
       </a>
       <nav aria-label="Hovedmeny">
         <a href="#om">Om</a>
+        <a href="#kalender">Kalender</a>
         <a class="nav-cta" href="#kontakt">Ta kontakt <span aria-hidden="true">↗</span></a>
       </nav>
     </header>
@@ -601,7 +900,7 @@
             Send over idéen, så ser vi hva vi kan få til.
           </p>
           <div class="actions">
-            <a class="button" href="#kontakt">Send en forespørsel <span aria-hidden="true">↗</span></a>
+            <a class="button" href="#kalender">Velg ønsket dato <span aria-hidden="true">↗</span></a>
             <a class="text-link" href="#om">Bli litt bedre kjent</a>
           </div>
         </div>
@@ -663,6 +962,82 @@
         </div>
       </section>
 
+      <section class="shell booking" id="kalender">
+        <div class="booking-heading">
+          <div>
+            <p class="eyebrow">Bookingforespørsel</p>
+            <h2>Finn en dato å glede seg til.</h2>
+          </div>
+          <span class="booking-period-label">4.–31. desember 2026</span>
+        </div>
+
+        <div class="booking-layout">
+          <div class="calendar-panel">
+            <div class="calendar-top">
+              <h3>Desember 2026</h3>
+              <span class="calendar-range">4.–31. desember</span>
+            </div>
+            <div class="calendar-weekdays" aria-hidden="true">
+              <span>Man</span>
+              <span>Tir</span>
+              <span>Ons</span>
+              <span>Tor</span>
+              <span>Fre</span>
+              <span>Lør</span>
+              <span>Søn</span>
+            </div>
+            <div
+              class="calendar-days"
+              id="calendar-days"
+              role="group"
+              aria-label="Velg ønsket bookingdato i desember 2026"
+            ></div>
+            <div class="calendar-legend" aria-label="Kalenderforklaring">
+              <span><i class="legend-dot" aria-hidden="true"></i>Kan forespørres</span>
+            </div>
+          </div>
+
+          <aside class="booking-panel" aria-labelledby="booking-date">
+            <p class="eyebrow">Din dato</p>
+            <h3 id="booking-date">Velg en dato</h3>
+            <p class="booking-copy" id="booking-copy">
+              Velg ønsket dato og fyll inn navn og begrunnelse.
+            </p>
+            <form class="booking-form" id="booking-form">
+              <label for="booking-name">
+                Navn
+                <input
+                  id="booking-name"
+                  name="name"
+                  type="text"
+                  autocomplete="name"
+                  maxlength="120"
+                  required
+                  placeholder="Ditt navn"
+                />
+              </label>
+              <label for="booking-reason">
+                Begrunnelse for booking
+                <textarea
+                  id="booking-reason"
+                  name="reason"
+                  maxlength="1500"
+                  required
+                  placeholder="Hva ønsker du å booke?"
+                ></textarea>
+              </label>
+              <button class="booking-submit" id="booking-submit" type="submit" disabled>
+                Send bookingforespørsel
+              </button>
+            </form>
+            <p class="booking-note">
+              Dette åpner et e-postutkast til Mathias. Send det fra e-postprogrammet ditt; datoen reserveres ikke før Mathias bekrefter.
+            </p>
+            <p class="booking-status" id="booking-status" role="status" aria-live="polite"></p>
+          </aside>
+        </div>
+      </section>
+
       <section class="contact" id="kontakt">
         <div class="shell contact-inner">
           <div>
@@ -685,5 +1060,111 @@
         <a href="mailto:mathias.thorsell@hotmail.com">mathias.thorsell@hotmail.com</a>
       </div>
     </footer>
+    <script>
+      const calendarDays = document.querySelector("#calendar-days");
+      const bookingDate = document.querySelector("#booking-date");
+      const bookingCopy = document.querySelector("#booking-copy");
+      const bookingForm = document.querySelector("#booking-form");
+      const bookingName = document.querySelector("#booking-name");
+      const bookingReason = document.querySelector("#booking-reason");
+      const bookingSubmit = document.querySelector("#booking-submit");
+      const bookingStatus = document.querySelector("#booking-status");
+      let selectedDate = null;
+
+      const formatBookingDate = (dateKey) =>
+        new Intl.DateTimeFormat("nb-NO", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          timeZone: "UTC",
+        }).format(new Date(`${dateKey}T00:00:00Z`));
+
+      const renderCalendar = () => {
+        const firstWeekday = (new Date(Date.UTC(2026, 11, 1)).getUTCDay() + 6) % 7;
+        calendarDays.replaceChildren();
+
+        for (let blank = 0; blank < firstWeekday; blank += 1) {
+          const spacer = document.createElement("span");
+          spacer.className = "calendar-blank";
+          spacer.setAttribute("aria-hidden", "true");
+          calendarDays.append(spacer);
+        }
+
+        for (let day = 1; day <= 31; day += 1) {
+          const dateKey = `2026-12-${String(day).padStart(2, "0")}`;
+          const button = document.createElement("button");
+
+          button.type = "button";
+          button.className = "calendar-day";
+          button.textContent = String(day);
+          button.setAttribute("aria-pressed", String(selectedDate === dateKey));
+
+          if (day < 4) {
+            button.disabled = true;
+            button.setAttribute("aria-label", `${day}. desember, utenfor bookingperioden`);
+          } else {
+            button.setAttribute("aria-label", `${formatBookingDate(dateKey)}, send bookingforespørsel`);
+            button.addEventListener("click", () => {
+              selectedDate = dateKey;
+              bookingDate.textContent = formatBookingDate(dateKey);
+              bookingCopy.textContent = "Fyll inn navn og begrunnelse. Tilgjengelighet bekreftes på e-post.";
+              bookingStatus.textContent = "";
+              updateBookingButton();
+              renderCalendar();
+            });
+          }
+
+          if (selectedDate === dateKey) {
+            button.classList.add("is-selected");
+          }
+
+          calendarDays.append(button);
+        }
+      };
+
+      const updateBookingButton = () => {
+        bookingSubmit.disabled =
+          !selectedDate ||
+          !bookingName.value.trim() ||
+          !bookingReason.value.trim() ||
+          !bookingForm.checkValidity();
+      };
+
+      bookingForm.addEventListener("input", updateBookingButton);
+      bookingForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        if (!selectedDate) {
+          bookingStatus.textContent = "Velg en dato i kalenderen først.";
+          return;
+        }
+
+        if (!bookingForm.reportValidity()) {
+          return;
+        }
+
+        const name = bookingName.value.trim();
+        const reason = bookingReason.value.trim();
+
+        if (!name || !reason) {
+          bookingStatus.textContent = "Fyll inn navn og begrunnelse før du sender.";
+          return;
+        }
+
+        const formattedDate = formatBookingDate(selectedDate);
+        const subject = encodeURIComponent(`Bookingforespørsel: ${formattedDate}`);
+        const body = encodeURIComponent(
+          `Navn: ${name}\nØnsket dato: ${formattedDate}\nBegrunnelse: ${reason}`,
+        );
+
+        bookingStatus.textContent =
+          "E-postutkast åpnes. Send meldingen i e-postprogrammet for å sende forespørselen.";
+        window.location.href = `mailto:mathias.thorsell@hotmail.com?subject=${subject}&body=${body}`;
+      });
+
+      renderCalendar();
+      updateBookingButton();
+    </script>
   </body>
 </html>
