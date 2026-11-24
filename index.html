@@ -1133,6 +1133,12 @@
     <script>
       const STORAGE_KEY = "mathiasbooking.localCalendar.unavailableSlots.v1";
       const VALID_SLOT_KEY = /^2026-12-(0[4-9]|[12]\d|3[01])\|(18:00|20:00|22:00)$/;
+      const CLOSED_DATES = new Set([
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-31",
+      ]);
       const calendarDays = document.querySelector("#calendar-days");
       const bookingDate = document.querySelector("#booking-date");
       const bookingCopy = document.querySelector("#booking-copy");
@@ -1240,16 +1246,20 @@
           const dateKey = `2026-12-${String(day).padStart(2, "0")}`;
           const button = document.createElement("button");
           const inPeriod = day >= 4;
-          const hasAvailability = storageReady && dateHasAvailableSlot(dateKey, now);
+          const isClosed = CLOSED_DATES.has(dateKey);
+          const hasAvailability =
+            storageReady && !isClosed && dateHasAvailableSlot(dateKey, now);
 
           button.type = "button";
           button.className = "calendar-day";
           button.textContent = String(day);
           button.setAttribute("aria-pressed", String(selectedDate === dateKey));
-          button.disabled = !inPeriod || dateKey < now.date || !hasAvailability;
+          button.disabled = !inPeriod || dateKey < now.date || isClosed || !hasAvailability;
 
           if (!inPeriod) {
             button.setAttribute("aria-label", `${day}. desember, utenfor kalenderperioden`);
+          } else if (isClosed) {
+            button.setAttribute("aria-label", `${formatBookingDate(dateKey)}, stengt`);
           } else if (!storageReady) {
             button.setAttribute("aria-label", `${formatBookingDate(dateKey)}, lokal kalender utilgjengelig`);
           } else if (!hasAvailability) {

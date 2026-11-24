@@ -5,6 +5,12 @@ const SLOTS = [
   { start: "22:00", end: "00:00" },
 ];
 const VALID_SLOT_KEY = /^2026-12-(0[4-9]|[12]\d|3[01])\|(18:00|20:00|22:00)$/;
+const CLOSED_DATES = new Set([
+  "2026-12-24",
+  "2026-12-25",
+  "2026-12-26",
+  "2026-12-31",
+]);
 const calendar = document.querySelector("#admin-calendar");
 const status = document.querySelector("#admin-status");
 
@@ -43,6 +49,7 @@ function renderCalendar() {
 
   for (let day = 4; day <= 31; day += 1) {
     const date = `2026-12-${String(day).padStart(2, "0")}`;
+    const isClosed = CLOSED_DATES.has(date);
     const card = document.createElement("section");
     const heading = document.createElement("h2");
     const slotList = document.createElement("div");
@@ -57,8 +64,8 @@ function renderCalendar() {
       const text = document.createElement("span");
       label.className = "slot-option";
       checkbox.type = "checkbox";
-      checkbox.checked = blockedSlots.has(key);
-      checkbox.disabled = !storageReady;
+      checkbox.checked = isClosed || blockedSlots.has(key);
+      checkbox.disabled = !storageReady || isClosed;
       checkbox.addEventListener("change", () => {
         const next = new Set(blockedSlots);
         if (checkbox.checked) next.add(key);
@@ -73,7 +80,7 @@ function renderCalendar() {
           setStatus(`Kunne ikke lagre endringen: ${error.message}`, true);
         }
       });
-      text.textContent = `${slot.start}–${slot.end} opptatt`;
+      text.textContent = `${slot.start}–${slot.end} ${isClosed ? "stengt" : "opptatt"}`;
       label.append(checkbox, text);
       slotList.append(label);
     }
